@@ -1,34 +1,52 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
 
 var activitySchema = mongoose.Schema({
-    moderator_username:{
-    	type:String,
-        required: true,
-        unique:true
-    },
-    name:{
-        type:String,
-        required: true
-    },
-    availablity:{
-        type:Number,
-        required: true
-    },
-    discount:{
-        type:String,
-        required: true
-    },
-    images:[String],
-    rating:{
-        type:Number
-    },
-    payment:{
-        type:String
-    },
-    website:{
-        type:String
-    },       
+	
+	business_id:{
+	    	type:String,
+		required: true,
+		unique:true
+	},
+	
+	name:{
+		type:String,
+		required: true
+	},
+	
+	dates:[{
+		hour: Number, 
+		day: Number,
+		month: Number,
+		year: Number
+	}], 
+
+	capacity:{
+		type:Number,
+		required: true
+	},
+
+	discount:{
+		type:String,
+	},
+
+	images:[
+		String
+	],
+	
+	rating:[
+		Number
+	],
+
+	reviews:[{
+		userN:String,
+		review: String,	
+	}],
+
+	payment:{
+		type:Number,
+		required: true
+	},
+      
 })
 
 var Activity = mongoose.model("activity", activitySchema);
