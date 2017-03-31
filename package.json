@@ -1,0 +1,30 @@
+{
+    "name": "scriptaholic",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node app"
+    },
+    "dependencies": {
+        "bcryptjs": "*",
+        "body-parser": "*",
+        "cors": "*",
+        "express": "*",
+        "fs": "*",
+        "gulp": "*",
+        "gulp-develop-server": "*",
+        "gulp-jshint": "*",
+        "jsonwebtoken": "*",
+        "mongoose": "*",
+        "multer": "*",
+        "passport": "*",
+        "passport-facebook": "*",
+        "passport-jwt": "*",
+        "passport-local": "*",
+        "zone.js": "*"
+    },
+    "author": "El-Etreby",
+    "license": "ISC"
+}
