@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<form method="POST" action="/moderator/register"  enctype="multipart/form-data" >
+  email: <input type="text" name="email"><br>
+  location: <input type="text" name="business_location"><br>
+  business_number: <input type="text" name="business_number"><br>
+  bank_account: <input type="text" name="bank_account"><br>
+  business_name: <input type="text" name="business_name"><br>
+  PICTURE:<br>
+  <input type="file" name="file[]"/>
+  <br><br>
+
+ <input type="submit" value="Submit">
+   <script>            
+
+$('input[type="file"]').on('change', function() { $(this).append('<input type="file" name="file[]"/>'});
+
+    </script>
+</form>
+
+
+
+
+</body>
+</html>

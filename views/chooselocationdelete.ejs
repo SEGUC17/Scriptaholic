@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+     <form method="POST" action="/moderator/delete">
+<% for(var i=0; i<locations.length; i++){%>
+    <input type="radio" name="location" value =<%= locations[i] %> ><%= locations[i] %></input>
+    <br>
+    <% } %>
+        <input type="submit" value="Delete">
+
+    </form>
+</body>
+</html>

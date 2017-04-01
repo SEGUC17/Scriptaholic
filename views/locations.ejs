@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+<% for(var i=0; i<locations.length; i++){%>
+    <p><%= locations[i] %></p>
+    <% } %>
+    <form method="POST" action="/moderator/addlocation">
+        <input type="text" name="location">
+        <input type="submit" value="Add Location">
+
+    </form>
+    <a href="/moderator/chooseEdit">Edit</a>
+    <a href="/moderator/chooseDelete">Delete</a>
+</body>
+</html>

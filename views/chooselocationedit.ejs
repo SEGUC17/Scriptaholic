@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+     <form method="POST" action="/moderator/edit">
+<% for(var i=0; i<locations.length; i++){%>
+    <input type="radio" name="location" value =<%= locations[i] %>><%= locations[i] %></input>
+    <br>
+    <% } %>
+    <input type="text" name ="newlocation">
+        <input type="submit" value="Edit">
+
+    </form>
+</body>
+</html>
