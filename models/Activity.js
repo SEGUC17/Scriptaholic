@@ -36,6 +36,11 @@ var activitySchema = mongoose.Schema({
 
     },
 
+    description:{
+        type: String,
+        required: true,
+    },
+
 })
 
 var Activity = mongoose.model("activity", activitySchema);
@@ -44,4 +49,5 @@ module.exports = Activity;
 module.exports.getActivityById = function(id, callback) {
     Activity.findById(id, callback);
 }
+
 
