@@ -444,4 +444,36 @@ router.post('/activity/deletePicture', passport.authenticate('jwt', {
 });
 
 
+router.get('/viewEventReservations',passport.authenticate('jwt', {session: false}),(req, res)=>{
+    Booking.find({
+        'business_id': req.user._id,'isEvent': true
+    }, function(err, bookings) {
+        console.log(req.body)
+        res.json(bookings);
+    });
+});
+router.get('/viewActivityReservations',passport.authenticate('jwt', {session: false}),(req, res)=>{
+    Booking.find({
+        'business_id': req.user._id,'isEvent': false
+    }, function(err, bookings) {
+        console.log(req.body)
+        res.json(bookings);
+    });
+});
+
+
+
+router.get('/viewReviewsRatings',passport.authenticate('jwt', {session: false}), (req, res) => {
+username = req.user.username;
+    Business.findOne({
+        'username': username
+    }, function(err, business) {
+if(err)
+    console.log(err);
+        res.json(business.feedback);
+    });
+
+});
+
+
 module.exports = router;
