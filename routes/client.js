@@ -427,6 +427,109 @@ router.get('/top3', function(req, res) {
 
 });
 
+//3.3
+// viewing the newsfeed
+router.get('/newsfeed', function(req, res) {
+    var output = [];
+    //finds the  news of every business and shows it
+    Business.find(function(err, business) {
+        if (err)
+            throw err;
+        else {
+
+            for (var i = 0; i < business.length; i++) {
+                if (business[i].news)
+                    output.push({
+                        news: business[i].news
+                    });
+            }
+
+        }
+        console.log({
+            output
+        });
+    });
+    // res.render('output',{output});
+});
+
+router.post('/rate&review', passport.authenticate('jwt', {
+    session: false
+}), function(req, res) {
+
+    //finds if there's a booking with this client's email
+    //req.body.clientid di mafroud tkoun b req.user w req.body.business mesh hatkoun keda akid
+    var username = req.user.username;
+    Booking.findOne({
+        client_id: req.user.id,
+        business_id: req.body.businessid
+    }).exec(function(err, booking) {
+        if (err) {
+            throw err;
+            console.log('Err');
+        }
+        //if there was no booking found then he should book before he rates
+        else {
+            if (!booking) {
+                res.json({
+                    message: 'You should be able to write your review after you book'
+                })
+            } else {
+                Business.find({
+                        _id: booking.business_id
+                    },
+                    function(err, business) {
+                        if (err) throw err;
+                        else {
+                            Business.findOne({
+                                _id: req.body.businessid,
+                                feedback: {
+                                    $elemMatch: {
+                                        clientUsername: username
+                                    }
+                                }
+
+                            }, function(err, result) {
+                                console.log(result);
+                                if (result) {
+                                    res.json("already exists");
+                                } else {
+                                    if (req.body.review) {
+                                        Business.update({
+                                                _id: req.body.businessid,
+                                            }, {
+                                                $addToSet: {
+                                                    feedback: {
+                                                        review: req.body.review,
+                                                        clientUsername: username,
+                                                        rating: req.body.rating
+                                                    }
+                                                }
+                                            },
+                                            function(err, result) {
+                                                console.log(result);
+                                            })
+                                    } else {
+                                        Business.update({
+                                            _id: req.body.businessid
+                                        }, {
+                                            $addToSet: {
+                                                feedback: {
+                                                    clientUsername: username,
+                                                    rating: req.body.rating
+                                                }
+                                            }
+                                        }, function(err, result) {});
+                                    }
+                                    res.json("success");
+                                }
+                            });
+                        }
+                    })
+            }
+        }
+    });
+
+});
 
 
 module.exports = router;
