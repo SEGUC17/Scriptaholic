@@ -11,6 +11,7 @@ var config = require('../config/database')
 var Activity = require('../models/Activity');
 var date = require('date-and-time');
 var businessTitle;
+var ObjectId = require('mongodb').ObjectID;
 
 
 
@@ -18,7 +19,7 @@ var businessTitle;
 router.post('/register', function(req, res, next) {
     let newClient = new Client({
         username: req.body.username,
-        name: req.body.username,
+        name: req.body.name,
         email: req.body.email,
         password: req.body.password,
     });
@@ -180,7 +181,7 @@ router.post('/booking/activity', passport.authenticate('jwt', {
 
     var activity_id = req.body.activity_id;
     var client_id = req.user.id;
-    var date1 = new Date(2017, 3, 4, 14, 0, 0);
+    var date1 = new Date(2017, 3, 3, 14, 0, 0);
 
 
 
@@ -194,6 +195,7 @@ router.post('/booking/activity', passport.authenticate('jwt', {
         }
     }, function(err, activity) {
 
+        console.log(activity);
 
         for (var i = 0; i < activity.dates.length; i++) {
             if (activity.dates[i].date.getTime() == date1.getTime()) {
@@ -244,7 +246,7 @@ router.post('/booking/activity', passport.authenticate('jwt', {
 
 })
 
-router.post('/deleteBookings', passport.authenticate('jwt', {
+router.post('/deleteBookingsActivity', passport.authenticate('jwt', {
     session: false
 }), function(req, res) {
 
@@ -372,7 +374,7 @@ router.post('/rate&review', passport.authenticate('jwt', {
                                                     clientUsername: username,
                                                     rating: req.body.rating
                                                 }
-                                            }
+                                            },
                                         }, function(err, result) {});
                                     }
                                     res.json("success");
@@ -452,84 +454,6 @@ router.get('/newsfeed', function(req, res) {
     // res.render('output',{output});
 });
 
-router.post('/rate&review', passport.authenticate('jwt', {
-    session: false
-}), function(req, res) {
-
-    //finds if there's a booking with this client's email
-    //req.body.clientid di mafroud tkoun b req.user w req.body.business mesh hatkoun keda akid
-    var username = req.user.username;
-    Booking.findOne({
-        client_id: req.user.id,
-        business_id: req.body.businessid
-    }).exec(function(err, booking) {
-        if (err) {
-            throw err;
-            console.log('Err');
-        }
-        //if there was no booking found then he should book before he rates
-        else {
-            if (!booking) {
-                res.json({
-                    message: 'You should be able to write your review after you book'
-                })
-            } else {
-                Business.find({
-                        _id: booking.business_id
-                    },
-                    function(err, business) {
-                        if (err) throw err;
-                        else {
-                            Business.findOne({
-                                _id: req.body.businessid,
-                                feedback: {
-                                    $elemMatch: {
-                                        clientUsername: username
-                                    }
-                                }
-
-                            }, function(err, result) {
-                                console.log(result);
-                                if (result) {
-                                    res.json("already exists");
-                                } else {
-                                    if (req.body.review) {
-                                        Business.update({
-                                                _id: req.body.businessid,
-                                            }, {
-                                                $addToSet: {
-                                                    feedback: {
-                                                        review: req.body.review,
-                                                        clientUsername: username,
-                                                        rating: req.body.rating
-                                                    }
-                                                }
-                                            },
-                                            function(err, result) {
-                                                console.log(result);
-                                            })
-                                    } else {
-                                        Business.update({
-                                            _id: req.body.businessid
-                                        }, {
-                                            $addToSet: {
-                                                feedback: {
-                                                    clientUsername: username,
-                                                    rating: req.body.rating
-                                                }
-                                            }
-                                        }, function(err, result) {});
-                                    }
-                                    res.json("success");
-                                }
-                            });
-                        }
-                    })
-            }
-        }
-    });
-
-});
 
 //3.4
 //view events schedule

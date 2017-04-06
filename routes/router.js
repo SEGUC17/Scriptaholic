@@ -2,7 +2,7 @@ var express = require('express');
 var moderator = require('./moderator.js');
 //var user = require('./user.js');
 var admin = require('./admin.js');
-
+var client = require('./client.js');
 
 var Business = require('../models/Business')
 var Activity = require('../models/Activity')
@@ -59,5 +59,5 @@ router.get('/activities', function(req, res) {
 router.use('/moderator', moderator);
 //router.use('/user', user);
 router.use('/admin', admin);
-
+router.use('/client', client);
 module.exports = router;

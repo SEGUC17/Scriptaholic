@@ -141,7 +141,7 @@ module.exports.getBusinessByType = function(type, callback) {
     Business.find(query, callback);
 }
 
-odule.exports.getBusinessByAddress = function(address, cb) {
+module.exports.getBusinessByAddress = function(address, cb) {
     // var BusninessModel = mongoose.model('Business');
 
     var outquery = Business.find({
