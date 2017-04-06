@@ -1,6 +1,6 @@
 var express = require('express');
 var moderator = require('./moderator.js');
-var user = require('./user.js');
+//var user = require('./user.js');
 var admin = require('./admin.js');
 
 
@@ -57,7 +57,7 @@ router.get('/activities', function(req, res) {
 //------------------------------------------------------
 
 router.use('/moderator', moderator);
-router.use('/user', user);
+//router.use('/user', user);
 router.use('/admin', admin);
 
 module.exports = router;

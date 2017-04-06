@@ -1,11 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt-nodejs');
-var autoIncrement = require('mongoose-auto-increment');
-var server = require('../../server');
-var connection = server.connection;
+//var bcrypt = require('bcrypt-nodejs');
+//var autoIncrement = require('mongoose-auto-increment');
+//var server = require('../../server');
+//var connection = server.connection;
 var Schema = mongoose.Schema;
-autoIncrement.initialize(server.connection);
+//autoIncrement.initialize(server.connection);
 
 
 
@@ -49,10 +49,12 @@ var BookingSchema = new Schema({
 
 });
 
+/*
 BookingSchema.plugin(autoIncrement.plugin, {
     model: 'Booking',
     field: 'booking_number'
 })
+*/
 
 
 
