@@ -23,6 +23,7 @@ var async = require('async');
 var ObjectId = require('mongodb').ObjectID;
 var path = require('path');
 var async = require('async');
+var date = require('date-and-time');
 
 //Request an account
 router.post('/register', (req, res) => {
@@ -624,12 +625,12 @@ router.post('/setPayment', passport.authenticate('jwt', {
 
 
 
-router.post('/moderatorentersdayandtime', passport.authenticate('jwt', {
+router.post('/setDayAndTime', passport.authenticate('jwt', {
     session: false
 }), (req, res) => {
-    var day = 2; // 1
-    var time = 14; // 14
-    var activity_name = 'dof';
+    var day = req.body.day; // 1
+    var time = req.body.time; // 14
+    var activity_name = req.body.name;
 
     Activity.findOne({
         business_id: req.user.id,
@@ -671,14 +672,14 @@ router.post('/moderatorentersdayandtime', passport.authenticate('jwt', {
     })
 })
 
-router.post('/moderatorentersdayandtime1', passport.authenticate('jwt', {
+router.post('/EnterDayAndTime', passport.authenticate('jwt', {
     session: false
 }), (req, res) => {
-    var duration = 2;
-    var day = 2 // 1
-    var startinghour = 10;
-    var endhour = 20; // 14
-    var activity_name = 'hazem';
+    var duration = req.body.duration;
+    var day = req.body.day // 1
+    var startinghour = req.body.startHour;
+    var endhour = req.body.endHour; // 14
+    var activity_name = req.body.name;
 
     Activity.findOne({
         business_id: req.user.id,
@@ -703,7 +704,7 @@ router.post('/moderatorentersdayandtime1', passport.authenticate('jwt', {
                     date: y,
                     capacity: activity.capacity
                 };
-                console.log(app.capacity);
+                console.log(app.date);
                 Activity.update({
                     business_id: req.user.id,
                     name: activity_name
