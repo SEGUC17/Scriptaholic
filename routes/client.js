@@ -531,5 +531,121 @@ router.post('/rate&review', passport.authenticate('jwt', {
 
 });
 
+//3.4
+//view events schedule
+router.get('/events', function(req, res) {
+    Event.find(function(err, events) {
+        if (err) throw err;
+        else {
+            console.log(events);
+            //  for(var i=0; i<events.length; i++){
 
+            //  }
+
+        }
+
+    });
+    // res.render('output',{output});
+});
+
+//3.1
+//Search by type
+router.post('/Business/search/type', function(req, res) {
+
+    var type = req.body.type;
+    console.log(type);
+    var result = [];
+    Business.getBusinessByType(type, function(err, business) {
+        if (err) {
+            console.log(err);
+        } else {
+            for (i = 0; i < business.length; i++) {
+                result.push({
+                    name: business[i].name
+                });
+
+            }
+            //console.log('passedfor1');
+            console.log(result);
+        }
+
+        //res.send(business);
+        //res.send(result);
+    })
+    //console.log(req.params);
+});
+
+
+//3.1
+//Search by location
+
+//Area
+router.post('/Business/search2/area', function(req, res) {
+    var area = req.body.area;
+    var result = [];
+    Business.getBusinessByArea(area, function(err, business) {
+        if (err) {
+            console.log(err);
+        } else {
+            for (var i = 0; i < business.length; i++) {
+                result.push({
+                    name: business[i].name
+                });
+
+            }
+            console.log('passedfor2');
+            console.log(result);
+        }
+
+        //res.send(business);
+        //res.send(result);
+    })
+});
+
+//City
+router.post('/Business/search3/city', function(req, res) {
+    var result = [];
+    var city = req.body.city;
+    //console.log('passedfor33');
+    Business.getBusinessByCity(city, function(err, business) {
+        if (err) {
+            console.log(err);
+        } else {
+            for (i = 0; i < business.length; i++) {
+                result.push({
+                    name: business[i].name
+                });
+
+            }
+            console.log('passedfor3');
+            console.log(result);
+        }
+
+        //res.send(business);
+        //res.send(result);
+    })
+});
+
+//Address
+router.post('/Business/search4/address', function(req, res) {
+    var result = [];
+    Business.getBusinessByAddress(req.body.address, function(err, business) {
+        if (err) {
+            console.log(err);
+        } else {
+            for (var i = 0; i < business.length; i++) {
+                result.push({
+                    name: business[i].name
+                });
+
+
+            }
+            console.log('passedfor4');
+            console.log(result);
+        }
+
+        //res.send(business);
+        //res.send(result);
+    })
+});
 module.exports = router;

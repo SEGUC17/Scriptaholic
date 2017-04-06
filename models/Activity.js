@@ -19,8 +19,8 @@ var activitySchema = mongoose.Schema({
             default: 0
         },
     }],
-    startDate: Date,           
-    endDate: Date, 
+    startDate: Date,
+    endDate: Date,
 
     discount: {
         actualDiscount: Number,
@@ -36,11 +36,6 @@ var activitySchema = mongoose.Schema({
 
     },
 
-    description:{
-        type: String,
-        required: true,
-    },
-
 })
 
 var Activity = mongoose.model("activity", activitySchema);
@@ -49,5 +44,3 @@ module.exports = Activity;
 module.exports.getActivityById = function(id, callback) {
     Activity.findById(id, callback);
 }
-
-
