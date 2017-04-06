@@ -214,9 +214,8 @@ router.post('/addActivity', passport.authenticate('jwt', {
     activity.business_id = req.user._id;
     activity.name = req.body.name;
     activity.capacity = req.body.capacity;
-    activity.startDate = new Date(2017, 3, 1),
-        activity.endDate = new Date(2017, 3, 5),
-        activity.description = req.body.description;
+    activity.startDate = new Date(2017, 3, 1);
+    activity.endDate = new Date(2017, 3, 5);
     activity.price = req.body.price;
     activity.discount.originalPrice = req.body.price;
 
@@ -282,7 +281,6 @@ router.post('/activity/editActivity', passport.authenticate('jwt', {
         } else {
             activity.name = req.body.newName;
             activity.capacity = req.body.capacity;
-            activity.description = req.body.description;
             activity.price = req.body.price;
             activity.discount.actualDiscount = 0;
             activity.discount.originalPrice = req.body.price;

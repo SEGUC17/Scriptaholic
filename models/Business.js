@@ -61,7 +61,7 @@ var BusinessSchema = new Schema({
         type: String,
         default: "N/A"
     },
-    description: {  
+    description: {
         type: String,
         default: "N/A"
     },
@@ -119,7 +119,7 @@ module.exports.updateBusiness = function(username, business, callback) {
                     'email': business.email,
                     'business_name': business.business_name,
                     'location': business.location,
-                    'type': business.type                    
+                    'type': business.type
                 }
             }, callback)
         })
@@ -131,4 +131,73 @@ module.exports.comparePassword = function(candidatePassword, hash, callback) {
         if (err) throw err;
         callback(null, isMatch)
     })
+}
+
+module.exports.getBusinessByType = function(type, callback) {
+    var query = {
+        type: type
+    }
+
+    Business.find(query, callback);
+}
+
+odule.exports.getBusinessByAddress = function(address, cb) {
+    // var BusninessModel = mongoose.model('Business');
+
+    var outquery = Business.find({
+        location: {
+            $elemMatch: {
+                address: address
+            }
+        }
+    }, function(err, business) {
+
+        if (err)
+            console.log(err);
+        else {
+            console.log(business);
+            cb(err, business);
+        }
+    });
+
+}
+
+module.exports.getBusinessByArea = function(area, cb) {
+    // var BusninessModel = mongoose.model('Business');
+
+    var outquery = Business.find({
+        location: {
+            $elemMatch: {
+                area: area
+            }
+        }
+    }, function(err, business) {
+
+        if (err)
+            console.log(err);
+        else {
+            console.log(business);
+            cb(err, business);
+        }
+    });
+}
+
+module.exports.getBusinessByCity = function(city, cb) {
+    // var BusninessModel = mongoose.model('Business');
+
+    var outquery = Business.find({
+        location: {
+            $elemMatch: {
+                city: city
+            }
+        }
+    }, function(err, business) {
+
+        if (err)
+            console.log(err);
+        else {
+            console.log(business);
+            cb(err, business);
+        }
+    });
 }
