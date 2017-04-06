@@ -174,6 +174,136 @@ router.post('/subscribe', passport.authenticate('jwt', {
     });
 });
 
+router.post('/booking/activity', passport.authenticate('jwt', {
+    session: false
+}), function(req, res) {
+
+    var activity_id = req.body.activity_id;
+    var client_id = req.user.id;
+    var date1 = new Date(2017, 3, 4, 14, 0, 0);
+
+
+
+
+    Activity.findOne({
+        _id: activity_id,
+        dates: {
+            $elemMatch: {
+                date: date1
+            }
+        }
+    }, function(err, activity) {
+
+
+        for (var i = 0; i < activity.dates.length; i++) {
+            if (activity.dates[i].date.getTime() == date1.getTime()) {
+
+                if (activity.dates[i].capacity != 0) {
+                    Activity.update({
+                            _id: activity.id,
+                            "dates.date": date1
+                        }, {
+                            $inc: {
+                                "dates.$.capacity": -1
+                            }
+                        }, {
+                            new: true
+                        },
+                        function(err, result) {
+                            if (err) {
+                                throw err;
+                            }
+
+                            console.log(result);
+                        });
+
+                    var newBooking = new Booking();
+                    newBooking.client_id = client_id;
+                    newBooking.business_id = activity.business_id;
+                    newBooking.activity_id = activity_id;
+                    newBooking.booking_number = 1232424;
+                    newBooking.isEvent = false;
+                    newBooking.time = date1;
+                    newBooking.payment = activity.price;
+                    newBooking.save(function(err, booking) {
+                        if (err) throw err;
+                    });
+
+
+
+
+                } else {
+                    console.log('full');
+                }
+
+            }
+        }
+
+
+    })
+
+})
+
+router.post('/deleteBookings', passport.authenticate('jwt', {
+    session: false
+}), function(req, res) {
+
+    //var id = req.body.id;
+    var client_id = req.user.id;
+    var booking_id = req.body.booking_id;
+
+    Booking.findOne({
+        _id: booking_id
+    }).exec(function(err, booking) { //58e62e8558a630147052eaf7
+
+
+        if (err) {
+            //console.log('sjsjs');
+            return res.json(err);
+        }
+        //58e610e9d4a28e0b8cb9722d
+        //2017-04-06T09:56:57.723Z
+        //58e610e9d4a28e0b8cb9722e
+
+        if (booking)
+
+
+        { //removes booking from the database
+            //console.log(booking);
+            //console.log('true');
+            //not convinced be req.body.date bas sm3na kalam gemmo bas kdsa
+            Activity.update({
+                    _id: booking.activity_id,
+                    "dates.date": booking.time
+                }, {
+                    $inc: {
+                        "dates.$.capacity": 1
+                    }
+                }, {
+                    new: true
+                },
+                function(err, result) {
+                    if (err) {
+                        throw err;
+                    }
+
+                    console.log(result);
+                });
+
+
+            booking.remove();
+            //console.log('remo');
+
+        } else {
+            //return res.json(err);
+        }
+    });
+
+
+
+
+})
+
 
 
 module.exports = router;
