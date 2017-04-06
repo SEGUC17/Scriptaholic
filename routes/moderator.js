@@ -475,5 +475,133 @@ if(err)
 
 });
 
+router.post('/addLocation', passport.authenticate('jwt', {
+    session: false
+}), function (req, res) {
+
+    username = req.user.username;
+    var city = req.body.city;
+    var area = req.body.area;
+    var address = req.body.address;           
+        
+        Business.update({
+                username: username
+            }, {
+                $addToSet: {
+                    location: {
+                        city: req.body.city,
+                        area: req.body.area,
+                        address: req.body.address
+                    }
+                }
+            },
+            function (err, result) {
+              
+            });
+
+res.json("success");
+       
+
+        //res.redirect('/moderator/locations');
+    
+       
+
+
+});
+
+router.post('/deleteLocation', passport.authenticate('jwt', {
+    session: false
+}), function (req, res) {
+    username = req.user.username;
+    location: req.body.location;
+    async.series([
+        function (callback) {
+            Business.findOne({
+                username: username
+            }, function (err, result) {
+                if (err) {
+                    callback(err);
+                }
+                currentbusiness = result;
+                locations = result.location;
+                callback();
+            });
+
+        },
+        function (callback) {
+
+            if (locations.length > 1)
+               { Business.update({
+                    username: username
+                }, {
+                    $pull: {
+                        location: req.body.location
+                    }
+                }, function (err, result)   {       if(err)
+        res.json("fail")
+        else
+res.json("success")});
+        }
+    else {res.json("atleast 1 location must exist")}}
+    ], function (err) {
+        if (err) res.send(err.message);
+        // res.render('index',{projects,img,currentuser});
+    });
+
+
+
+
+});
+router.post('/editLocation', passport.authenticate('jwt', {
+    session: false
+}), function (req, res) {
+    username = req.user.username;
+    location= req.body.location;
+  
+
+   Business.update({
+        username: username,
+        location:{$elemMatch:location}
+    }, {
+        $set: {
+           "location.$":{
+               city:req.body.new_city,
+               area:req.body.new_area,
+               address:req.body.new_address
+           }
+               
+            
+        }
+    }, function (err, result) {       if(err)
+        res.json("fail")
+        else
+res.json("success")});
+});
+
+router.post('/setPayment', passport.authenticate('jwt', {
+    session: false
+}), function (req, res) {
+    username = req.user.username;
+    payment = req.body.payment;
+    console.log(payment);
+    console.log(username);
+    Business.update({
+        username: username
+    }, {
+        $addToSet: {
+            payment_methods: {
+                $each: payment
+            }
+        }
+    }, function (err, result) {
+        if(err)
+        res.json("fail")
+        else
+res.json("success")
+    });
+
+
+});
+
 
 module.exports = router;
